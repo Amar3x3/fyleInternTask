@@ -226,12 +226,12 @@ searchInput.addEventListener('input', function () {
     const searchQuery = this.value.trim().toLowerCase();
 
     // Trigger the search function with the input query
-    searchRepositoriesByTitle(searchQuery);
+    searchRepositoriesByTitle(username,searchQuery);
 });
 
 // Function to search repositories by title using GitHub Search API
-async function searchRepositoriesByTitle(query) {
-    const apiUrl = `https://api.github.com/search/repositories?q=${query}`;
+async function searchRepositoriesByTitle(user,query) {
+    const apiUrl = `https://api.github.com/search/repositories?q=user:${user}+in:title+${query}`;
     
     try {
         const response = await fetch(apiUrl);
