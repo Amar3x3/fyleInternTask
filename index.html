@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fyle Task</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    
+    <div class="mega-margin-container">
+    <div class="mega-grid-2">
+
+        <div class="profile-photo-cont">
+            <img class="profile-photo-img" src="" alt="" srcset="">
+        </div>
+
+
+        <div class="profile-info">
+            <h1 class="username "></h1>
+            <h2 class="fullname mg-up"></h2>
+            <p class="bio mg-up"></p>
+
+            <div class="mini-grid mg-up">
+               <div class="email-cont mini-grid">
+                <img class="icon" src="./images/email.png" alt="">
+                <p class="email"></p>
+               </div>
+                <div class="giturl-cont mini-grid">
+                    <img class="icon" src="./images/git.png" alt="">
+                    <p class="giturl"></p>
+                </div> 
+            </div>
+
+
+
+            <div class="mini-grid mg-up">
+                <div class="repo-cont mini-grid">
+                    <img class="icon" src="./images/repo.png" alt="">
+                    <p class="repo-count number"></p>
+                </div>
+
+                <div class="followers-cont mini-grid">
+                    <img class="icon" src="./images/followers.png" alt="">
+                    <p class="followers number"></p>
+                </div>
+
+                <div class="following-cont mini-grid">
+                    <img class="icon" src="./images/following.png" alt="">
+                    <p class="following number"></p>
+                </div>
+            </div>
+
+
+        </div>
+
+    </div>
+    <label for="reposPerPage">Repositories Per Page:</label>
+        <select name="reposPerPage" id="reposPerPage">
+            <option value="10">10</option>
+            <option value="20">20</option>
+            <option value="30">30</option>
+            <option value="40">40</option>
+            <option value="50">50</option>
+            <option value="60">60</option>
+            <option value="70">70</option>
+            <option value="80">80</option>
+            <option value="90">90</option>
+            <option value="100">100</option>
+        </select>
+        
+        <input type="search" name="" id="searchInput">
+
+    <div id="repos-list" class="cards-list">
+        
+
+
+    </div>
+
+
+    <div id="pagination"></div>
+        
+    <!-- Container for repository cards -->
+    <div class="cards-list" id="repos-list"></div>
+    
+    <!-- Display total pages -->
+    <div>Total Pages: <span id="total-pages"></span></div>
+</div>
+
+
+
+
+
+
+
+    <script src="app.js"></script>
+</body>
+</html>
