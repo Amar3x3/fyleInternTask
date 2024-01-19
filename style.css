@@ -153,7 +153,7 @@ html{
     color: rgb(139, 138, 138);
 }
 #pagination{
-    width: 100vw;
+    
     display: flex;
     justify-content: center;
     align-items: center;
@@ -173,5 +173,10 @@ html{
     }
     .profile-photo-img{
         width: 18rem;
+    }
+    .profile-photo-cont{
+        margin-right: unset;
+    }.username{
+        font-size: 62px;
     }
 }
