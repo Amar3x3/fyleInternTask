@@ -11,9 +11,11 @@
 }
 html{
     background-color: aliceblue;
+   
 }
 .mega-margin-container{
     margin: 2% 7%;
+    
 }
 .mega-grid-2{
     display: flex;
@@ -63,13 +65,15 @@ html{
     align-items: center;
     justify-content: center;
     flex-wrap: wrap;
+   
 }
 .card{
     margin: 1.2rem;
     padding: 1.5rem;
     background-color: #9cdef0;
     width: 40%;
-    height: 200px;
+    /* height: 200px; */
+    height: fit-content;
     box-shadow: 6px 14px 29px 12px rgba(0,0,0,.2);
     border-radius: 10px;
     cursor: pointer;
@@ -83,6 +87,7 @@ html{
     font-size: 22px;
     font-weight: 800;
     overflow: hidden;
+    color: black;
     
 }
 .icon-sm{
@@ -137,10 +142,7 @@ html{
     text-decoration: none;
     padding: 11px 14px;
 }
-.active{
-    background-color: black;
-    color: white;
-}
+
 .desc-cont{
 
     height: 60px;
@@ -162,6 +164,32 @@ html{
 .mg-rt{
     margin-right: 2rem;
 }
+#reposPerPage{
+    padding: 0.4rem;
+}
+.repoPageLabel{
+    font-size: 16px;
+    color: rgb(86, 83, 83);
+}
+.grid-center-cen{
+    justify-content: center;
+    margin-bottom: 2rem;
+    margin-top: 2rem;
+}
+.option-cont{
+    margin-right: 2rem;
+}
+.search{
+    padding: 0.7rem 1rem;
+    border-radius: 18px;
+}
+.active{
+    background-color: black;
+    color: white;
+}
+.overflow-cutter-mega{
+    overflow-x: hidden;
+}
     
 
 
@@ -170,6 +198,7 @@ html{
     .card{
         min-width: 270px;
         width: fit-content;
+        height: fit-content;
     }
     .profile-photo-img{
         width: 18rem;
@@ -179,4 +208,51 @@ html{
     }.username{
         font-size: 62px;
     }
+    .option-cont{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+    }
+    .icon{
+        margin-right: 0.2rem;
+    }
 }
+
+
+
+
+
+
+
+.reveal{
+    position: relative;
+    transform: translateY(90px);
+    opacity: 0;
+    transition: all 1.5s ease;
+  }
+  .reveal.active{
+    transform: translateY(0px);
+    opacity: 1;
+  }
+  .reveal-from-right{
+    position: relative;
+    transform: translateX(130px);
+    opacity: 0;
+    transition: all 1.7s ease;
+  }
+  .reveal-from-right.active-right{
+    transform: translateY(0px);
+    opacity: 1;
+  }
+  .reveal-from-left{
+    position: relative;
+    transform: translateX(-130px);
+    opacity: 0;
+    transition: all 1.7s ease;
+  }
+  .reveal-from-left.active-left{
+    transform: translateX(0px);
+    opacity: 1;
+  }
+  

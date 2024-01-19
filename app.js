@@ -7,6 +7,37 @@ const paginationContainer = document.getElementById('pagination');
 let currentPage = 1;
 var totalRepos;
 var repositories_json;
+var username='johnpapa';
+const go = document.querySelector('.search-go');
+
+go.addEventListener('click',()=>{
+    console.log("go")
+    const user = document.getElementById('gitUserName');
+    doesUserExist(user.value);
+})
+
+async function doesUserExist(user) {
+    const apiUrl = `https://api.github.com/users/${user}`;
+    
+    try {
+        const response = await fetch(apiUrl);
+        
+        // Check if the response status is 200 (OK)
+        if (response.ok) {
+            username = user;
+            Repositories(username,10);
+            UserProfile(username); // User exists
+        } else if (response.status === 404) {
+           alert("Username is not valid please try again");
+        } else {
+            throw new Error(`Unexpected response: ${response.status}`);
+        }
+    } catch (error) {
+        console.error('Error checking user existence:', error.message);
+        return false; // Assume user does not exist on error
+    }
+}
+
 
 async function fetchRepositories(username, page, perPage) {
     const apiUrl = `https://api.github.com/users/${username}/repos?page=${page}&per_page=${perPage}`;
@@ -29,11 +60,20 @@ function renderPagination(totalPages, onPageChange) {
         pageLink.href = '#';
         pageLink.textContent = page;
         pageLink.addEventListener('click', function () {
+            // Remove 'active' class from all page links
+            document.querySelectorAll('.pages').forEach(link => {
+                link.classList.remove('active');
+            });
+
+            // Add 'active' class to the clicked page
+            pageLink.classList.add('active');
+
+            // When a page is clicked, execute the provided callback (onPageChange)
             onPageChange(page);
         });
         if (page === currentPage) {
             console.log("triggered");
-            pageLink.classList.add('active'); // Highlight the current page
+            pageLink.classList.toggle('active'); // Highlight the current page
         }
         paginationContainer.appendChild(pageLink);
     }
@@ -51,7 +91,7 @@ async function Repositories(username, perPage) {
     const totalPages = Math.ceil(totalRepos / perPage);
 
     // Display total pages
-    totalPagesContainer.textContent = `Total Pages: ${totalPages}`;
+    
 
     // Function to render repositories for a specific page
     function renderRepositoriesPage(page) {
@@ -69,14 +109,16 @@ async function Repositories(username, perPage) {
                     
                     const repositoryCard = document.createElement('div');
                     repositoryCard.classList.add('card');
+                    repositoryCard.classList.add('reveal-from-right')
 
                     const miniGrid = document.createElement('div');
                     miniGrid.classList.add('mini-grid');
                     const starAndForkContainer = document.createElement('div');
+                    
                     const starAndForkHtml = `
                     <div class="mini-grid grid-center mg-up-7">
                         <div class="mini-grid grid-center mg-rt">
-                            <img class="icon icon-sm" src="./images/star.png">
+                                <img class="icon icon-sm" src="./images/star.png">
                             <p class = "sml-number">${data.stargazers_count}</p>
                         </div>
                         <div class="mini-grid grid-center">
@@ -86,8 +128,9 @@ async function Repositories(username, perPage) {
                     </div>
                     `;
                     starAndForkContainer.innerHTML = starAndForkHtml;
-                    const repositoryName = document.createElement('div');
+                    const repositoryName = document.createElement('a');
                     repositoryName.classList.add('card-title');
+                    repositoryName.href = data.html_url;
                     repositoryName.textContent = data.name;
                     miniGrid.appendChild(repositoryName);
                     
@@ -114,7 +157,7 @@ async function Repositories(username, perPage) {
                         data.topics.forEach(topic => {
                             const topicTag = document.createElement('div');
                             topicTag.classList.add('topic')
-                            const cleanedTopic = topic.trim().replace(/-/g, '');
+                            const cleanedTopic = topic.replace(/-/g, '');
                             topicTag.textContent = cleanedTopic;
                             topicsContainer.appendChild(topicTag);
                         });
@@ -216,23 +259,44 @@ function renderSearchResults(searchResults) {
     // Render search results
     searchResults.forEach(data => {
         const repositoryCard = document.createElement('div');
-        repositoryCard.classList.add('card');
+                    repositoryCard.classList.add('card');
 
-        const repositoryName = document.createElement('div');
-        repositoryName.textContent = data.name;
-        const descriptionCont = document.createElement('div');
-        descriptionCont.classList.add('desc-cont');
-        const description = document.createElement('div');
-        description.classList.add('description')
-        description.innerText = data.description;
+                    const miniGrid = document.createElement('div');
+                    miniGrid.classList.add('mini-grid');
+                    const starAndForkContainer = document.createElement('div');
+                    const starAndForkHtml = `
+                    <div class="mini-grid grid-center mg-up-7">
+                        <div class="mini-grid grid-center mg-rt">
+                            <img class="icon icon-sm" src="./images/star.png">
+                            <p class = "sml-number">${data.stargazers_count}</p>
+                        </div>
+                        <div class="mini-grid grid-center">
+                            <img class="icon icon-sm" src="./images/fork.png">
+                            <p class = "sml-number">${data.forks}</p>
+                        </div>
+                    </div>
+                    `;
+                    starAndForkContainer.innerHTML = starAndForkHtml;
+                    const repositoryName = document.createElement('div');
+                    repositoryName.classList.add('card-title');
+                    repositoryName.textContent = data.name;
+                    miniGrid.appendChild(repositoryName);
+                    
 
-        descriptionCont.appendChild(description);
-        repositoryCard.appendChild(repositoryName);
-        repositoryCard.appendChild(descriptionCont);
+                    const descriptionCont = document.createElement('div');
+                    descriptionCont.classList.add('desc-cont');
+                    const description = document.createElement('div');
+                    description.classList.add('description')
+                    description.innerText = data.description;
+                    descriptionCont.appendChild(description);
 
-        // Display topics, if available
-        if (data.topics && data.topics.length > 0) {
-            const overflowhidder = document.createElement('div');
+                    repositoryCard.appendChild(miniGrid);
+                    repositoryCard.appendChild(descriptionCont);
+                    
+
+                    // Display topics, if available
+                    if (data.topics && data.topics.length > 0) {
+                        const overflowhidder = document.createElement('div');
                         overflowhidder.classList.add('ov-hid');
                         const topicsContainer = document.createElement('div');
                         topicsContainer.classList.add('topics-list')
@@ -241,13 +305,18 @@ function renderSearchResults(searchResults) {
                         data.topics.forEach(topic => {
                             const topicTag = document.createElement('div');
                             topicTag.classList.add('topic')
-                            topicTag.textContent = topic;
+                            const cleanedTopic = topic.replace(/-/g, '');
+                            topicTag.textContent = cleanedTopic;
                             topicsContainer.appendChild(topicTag);
                         });
                         overflowhidder.appendChild(topicsContainer);
-            repositoryCard.appendChild(overflowhidder);
-        }
 
+                        repositoryCard.appendChild(overflowhidder);
+                        
+                    }
+                    repositoryCard.appendChild(starAndForkContainer);
+
+                   
         searchResultsContainer.appendChild(repositoryCard);
     });
 }
@@ -256,7 +325,7 @@ function renderSearchResults(searchResults) {
 
 
 // Fetch and render repositories with default value (e.g., 10 repositories per page)
-Repositories('johnpapa', 10);
+Repositories(username, 10);
 
 
 
@@ -296,15 +365,15 @@ async function fetchUserProfile(username) {
 }
 
 
-async function UserProfile() {
-    const userData = await fetchUserProfile('johnpapa');
+async function UserProfile(user) {
+    const userData = await fetchUserProfile(user);
     setUserProfileImage(userData.avatar_url);
 
     setUserInformation(userData.login, userData.name, userData.bio,
         userData.email, userData.html_url, userData.public_repos,
         userData.followers, userData.following);
 }
-UserProfile();
+UserProfile('johnpapa');
 
 
 function setUserProfileImage(url) {

@@ -8,8 +8,14 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <div class="overflow-cutter-mega">
     
     <div class="mega-margin-container">
+
+        <div class="user-input">
+            <input id="gitUserName"  placeholder="Enter Github Username" type="text">
+            <div class="search-go">Go</div>
+        </div>
     <div class="mega-grid-2">
 
         <div class="profile-photo-cont">
@@ -56,21 +62,25 @@
         </div>
 
     </div>
-    <label for="reposPerPage">Repositories Per Page:</label>
-        <select name="reposPerPage" id="reposPerPage">
-            <option value="10">10</option>
-            <option value="20">20</option>
-            <option value="30">30</option>
-            <option value="40">40</option>
-            <option value="50">50</option>
-            <option value="60">60</option>
-            <option value="70">70</option>
-            <option value="80">80</option>
-            <option value="90">90</option>
-            <option value="100">100</option>
-        </select>
-        
-        <input type="search" name="" id="searchInput">
+   <div class="mini-grid grid-center-cen">
+    <div class="option-cont">
+        <label class="repoPageLabel" for="reposPerPage">Repo Per Page</label>
+    <select name="reposPerPage" id="reposPerPage">
+        <option value="10">10</option>
+        <option value="20">20</option>
+        <option value="30">30</option>
+        <option value="40">40</option>
+        <option value="50">50</option>
+        <option value="60">60</option>
+        <option value="70">70</option>
+        <option value="80">80</option>
+        <option value="90">90</option>
+        <option value="100">100</option>
+    </select>
+    </div>
+    
+    <input class="search" placeholder="Search Repo by Title" type="search" name="" id="searchInput">
+   </div>
 
     <div id="repos-list" class="cards-list">
         
@@ -85,7 +95,8 @@
     <div class="cards-list" id="repos-list"></div>
     
     <!-- Display total pages -->
-    <div>Total Pages: <span id="total-pages"></span></div>
+    <div> <span id="total-pages"></span></div>
+</div>
 </div>
 
 
@@ -95,5 +106,6 @@
 
 
     <script src="app.js"></script>
+    <script src="animate.js"></script>
 </body>
 </html>
