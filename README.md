@@ -1,1 +1,1 @@
-#Click on the index.html file
+Click on the index.html file
