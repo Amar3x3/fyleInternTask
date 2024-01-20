@@ -10,8 +10,9 @@ var repositories_json;
 var username='johnpapa';
 const go = document.querySelector('.search-go');
 
+// git user search button 
 go.addEventListener('click',()=>{
-    console.log("go")
+    // console.log("go")
     const user = document.getElementById('gitUserName');
     doesUserExist(user.value);
 })
@@ -38,7 +39,7 @@ async function doesUserExist(user) {
     }
 }
 
-
+//fetch reposittories of specific users
 async function fetchRepositories(user, page, perPage) {
     const apiUrl = `https://api.github.com/users/${user}/repos?page=${page}&per_page=${perPage}`;
     const response = await fetch(apiUrl);
@@ -54,7 +55,7 @@ function renderPagination(totalPages, onPageChange) {
     // Clear previous pagination
     paginationContainer.innerHTML = '';
 
-    // Create page number links
+    // page number links
     for (let page = 1; page <= totalPages; page++) {
         const pageLink = document.createElement('a');
         pageLink.classList.add('pages')
@@ -68,7 +69,7 @@ function renderPagination(totalPages, onPageChange) {
 
             pageLink.classList.add('active');
 
-            // When a page is clicked, execute the provided callback
+            // When a page is clicked it executes the provided callback
             onPageChange(page);
         });
         if (page === currentPage) {
@@ -79,7 +80,7 @@ function renderPagination(totalPages, onPageChange) {
     }
 }
 
-
+// render reposittories and handle totalpages for pagination function
 async function Repositories(user, perPage) {
      repositories_json = await fetchRepositories(user, currentPage, perPage);
     const repoList = document.querySelector(".cards-list");
@@ -91,7 +92,7 @@ async function Repositories(user, perPage) {
 
     
 
-    // Function to render repositories for a specific page
+    //render repositories for a specific page
     function renderRepositoriesPage(page) {
 
         // Clear previous repositories
@@ -177,6 +178,7 @@ async function Repositories(user, perPage) {
     renderPagination(totalPages, renderRepositoriesPage);
 }
 
+//list all repositories for search function
 async function listAllReposInJSON(username) {
     const perPage = 100; 
     let page = 1;
@@ -194,7 +196,6 @@ async function listAllReposInJSON(username) {
             const repositoriesData = await response.json();
 
             if (repositoriesData.length === 0) {
-                // No more repositories, break the loop
                 break;
             }
 
@@ -219,6 +220,7 @@ const data =  listAllReposInJSON(username);
 searchInput.addEventListener('click',()=>{
     searchRepos(username);
 })
+
 var firstNullFlg = true;
 searchInput.addEventListener('input', function () {
     const searchQuery = this.value.trim().toLowerCase();
@@ -246,6 +248,7 @@ searchInput.addEventListener('input', function () {
 
 });
 
+// search function 
 async function searchRepos(user){
    const repos =await listAllReposInJSON(user);
    const cardList = document.querySelector('.cards-list');
@@ -320,83 +323,8 @@ async function searchRepos(user){
 }
 
 
-// Function to render search results
-function renderSearchResults(searchResults) {
-    const searchResultsContainer = document.getElementById('repos-list');
 
-    // Clear previous search results
-    searchResultsContainer.innerHTML = '';
-
-    // Render search results
-    searchResults.forEach(data => {
-        const repositoryCard = document.createElement('div');
-                    repositoryCard.classList.add('card');
-
-                    const miniGrid = document.createElement('div');
-                    miniGrid.classList.add('mini-grid');
-                    const starAndForkContainer = document.createElement('div');
-                    const starAndForkHtml = `
-                    <div class="mini-grid grid-center mg-up-7">
-                        <div class="mini-grid grid-center mg-rt">
-                            <img class="icon icon-sm" src="./images/star.png">
-                            <p class = "sml-number">${data.stargazers_count}</p>
-                        </div>
-                        <div class="mini-grid grid-center">
-                            <img class="icon icon-sm" src="./images/fork.png">
-                            <p class = "sml-number">${data.forks}</p>
-                        </div>
-                    </div>
-                    `;
-                    starAndForkContainer.innerHTML = starAndForkHtml;
-                    const repositoryName = document.createElement('a');
-                    repositoryName.classList.add('card-title');
-                    repositoryName.href = data.html_url;
-                    repositoryName.textContent = data.name;
-                    miniGrid.appendChild(repositoryName);
-                    
-
-                    const descriptionCont = document.createElement('div');
-                    descriptionCont.classList.add('desc-cont');
-                    const description = document.createElement('div');
-                    description.classList.add('description')
-                    description.innerText = data.description;
-                    descriptionCont.appendChild(description);
-
-                    repositoryCard.appendChild(miniGrid);
-                    repositoryCard.appendChild(descriptionCont);
-                    
-
-                    // Display topics, if available
-                    if (data.topics && data.topics.length > 0) {
-                        const overflowhidder = document.createElement('div');
-                        overflowhidder.classList.add('ov-hid');
-                        const topicsContainer = document.createElement('div');
-                        topicsContainer.classList.add('topics-list')
-        
-
-                        data.topics.forEach(topic => {
-                            const topicTag = document.createElement('div');
-                            topicTag.classList.add('topic')
-                            const cleanedTopic = topic.replace(/-/g, '');
-                            topicTag.textContent = cleanedTopic;
-                            topicsContainer.appendChild(topicTag);
-                        });
-                        overflowhidder.appendChild(topicsContainer);
-
-                        repositoryCard.appendChild(overflowhidder);
-                        
-                    }
-                    repositoryCard.appendChild(starAndForkContainer);
-
-                   
-        searchResultsContainer.appendChild(repositoryCard);
-    });
-}
-
-// ...
-
-
-// Fetch and render repositories with default value (e.g., 10 repositories per page)
+// Fetch and render repositories with default value per page i.e. 10
 Repositories(username, 10);
 
 
@@ -414,22 +342,6 @@ async function fetchUserProfile(username) {
         }
 
         const userData = await response.json();
-
-
-
-        // Log some user information
-        console.log('Username:', userData.login);
-        console.log('Full Name:', userData.name);
-        console.log('Bio:', userData.bio);
-        console.log('Email:', userData.email);
-        console.log('Avatar URL:', userData.avatar_url);
-        console.log('GitHub Profile URL:', userData.html_url);
-        console.log('Public Repositories:', userData.public_repos);
-        totalRepos = userData.public_repos;
-        console.log('Followers:', userData.followers);
-        console.log('Following:', userData.following);
-        console.log('Account Created:', userData.created_at);
-        console.log('Account Last Updated:', userData.updated_at);
         return userData;
     } catch (error) {
         console.error('Error fetching user data:', error.message);
