@@ -39,8 +39,8 @@ async function doesUserExist(user) {
 }
 
 
-async function fetchRepositories(username, page, perPage) {
-    const apiUrl = `https://api.github.com/users/${username}/repos?page=${page}&per_page=${perPage}`;
+async function fetchRepositories(user, page, perPage) {
+    const apiUrl = `https://api.github.com/users/${user}/repos?page=${page}&per_page=${perPage}`;
     const response = await fetch(apiUrl);
     const repositoriesFetched = await response.json();
     console.log(repositoriesFetched);
@@ -80,8 +80,8 @@ function renderPagination(totalPages, onPageChange) {
 }
 
 // Updated Repositories function
-async function Repositories(username, perPage) {
-     repositories_json = await fetchRepositories(username, currentPage, perPage);
+async function Repositories(user, perPage) {
+     repositories_json = await fetchRepositories(user, currentPage, perPage);
     const repoList = document.querySelector(".cards-list");
 
     repoList.innerHTML='';
@@ -209,7 +209,8 @@ async function listAllReposInJSON(username) {
             page++;
         }
 
-        console.log('All Repositories for', username, ':', allRepositories);
+        // console.log('All Repositories for', username, ':', allRepositories);
+        return allRepositories;
     } catch (error) {
         console.error('Error fetching repositories data:', error.message);
     }
@@ -220,14 +221,103 @@ async function listAllReposInJSON(username) {
 
 
 const searchInput = document.getElementById('searchInput');
-const data =  listAllReposInJSON('johnpapa');
+const data =  listAllReposInJSON(username);
 
+searchInput.addEventListener('click',()=>{
+    searchRepos(username);
+})
 searchInput.addEventListener('input', function () {
     const searchQuery = this.value.trim().toLowerCase();
 
     // Trigger the search function with the input query
-    searchRepositoriesByTitle(username,searchQuery);
+    // searchRepositoriesByTitle(username,searchQuery);
+    if (searchInput.value.trim() === '') {
+        Repositories(username,10); // Call your function to fetch and display repositories
+    }
+   
+    const cards = document.querySelectorAll('.card');
+    
+    cards.forEach(card => {
+        const title = card.querySelector('.card-title').textContent.toLowerCase();
+        const display = title.includes(searchQuery) ? 'block' : 'none';
+        card.style.display = display;
+    });
+    
+
 });
+
+async function searchRepos(user){
+   const repos =await listAllReposInJSON(user);
+   const cardList = document.querySelector('.cards-list');
+   cardList.innerHTML = '';
+   console.log(repos);
+
+   repos.forEach((data)=>{
+    const repositoryCard = document.createElement('div');
+                    repositoryCard.classList.add('card');
+                    repositoryCard.classList.add('reveal-from-right')
+
+                    const miniGrid = document.createElement('div');
+                    miniGrid.classList.add('mini-grid');
+                    const starAndForkContainer = document.createElement('div');
+                    
+                    const starAndForkHtml = `
+                    <div class="mini-grid grid-center mg-up-7">
+                        <div class="mini-grid grid-center mg-rt">
+                                <img class="icon icon-sm" src="./images/star.png">
+                            <p class = "sml-number">${data.stargazers_count}</p>
+                        </div>
+                        <div class="mini-grid grid-center">
+                            <img class="icon icon-sm" src="./images/fork.png">
+                            <p class = "sml-number">${data.forks}</p>
+                        </div>
+                    </div>
+                    `;
+                    starAndForkContainer.innerHTML = starAndForkHtml;
+                    const repositoryName = document.createElement('a');
+                    repositoryName.classList.add('card-title');
+                    repositoryName.href = data.html_url;
+                    repositoryName.textContent = data.name;
+                    miniGrid.appendChild(repositoryName);
+                    
+
+                    const descriptionCont = document.createElement('div');
+                    descriptionCont.classList.add('desc-cont');
+                    const description = document.createElement('div');
+                    description.classList.add('description')
+                    description.innerText = data.description;
+                    descriptionCont.appendChild(description);
+
+                    repositoryCard.appendChild(miniGrid);
+                    repositoryCard.appendChild(descriptionCont);
+                    
+
+                    // Display topics, if available
+                    if (data.topics && data.topics.length > 0) {
+                        const overflowhidder = document.createElement('div');
+                        overflowhidder.classList.add('ov-hid');
+                        const topicsContainer = document.createElement('div');
+                        topicsContainer.classList.add('topics-list')
+        
+
+                        data.topics.forEach(topic => {
+                            const topicTag = document.createElement('div');
+                            topicTag.classList.add('topic')
+                            const cleanedTopic = topic.replace(/-/g, '');
+                            topicTag.textContent = cleanedTopic;
+                            topicsContainer.appendChild(topicTag);
+                        });
+                        overflowhidder.appendChild(topicsContainer);
+
+                        repositoryCard.appendChild(overflowhidder);
+                        
+                    }
+                    repositoryCard.appendChild(starAndForkContainer);
+                cardList.appendChild(repositoryCard);
+   })
+   
+
+}
 
 // Function to search repositories by title using GitHub Search API
 async function searchRepositoriesByTitle(user,query) {
@@ -277,8 +367,9 @@ function renderSearchResults(searchResults) {
                     </div>
                     `;
                     starAndForkContainer.innerHTML = starAndForkHtml;
-                    const repositoryName = document.createElement('div');
+                    const repositoryName = document.createElement('a');
                     repositoryName.classList.add('card-title');
+                    repositoryName.href = data.html_url;
                     repositoryName.textContent = data.name;
                     miniGrid.appendChild(repositoryName);
                     

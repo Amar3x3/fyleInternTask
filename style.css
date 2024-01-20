@@ -53,6 +53,7 @@ html{
     display: flex;
     align-items: center;
     justify-content: space-between;
+    flex-wrap: wrap;
 }
 .mg-up{
     margin-top: 1.2rem;
@@ -165,11 +166,15 @@ html{
     margin-right: 2rem;
 }
 #reposPerPage{
-    padding: 0.4rem;
+    padding: 0.8rem;
+    background-color: #784cfb;
+    color: white;
+    border-radius: 19px;
 }
 .repoPageLabel{
     font-size: 16px;
     color: rgb(86, 83, 83);
+    margin-right: 1rem;
 }
 .grid-center-cen{
     justify-content: center;
@@ -190,11 +195,25 @@ html{
 .overflow-cutter-mega{
     overflow-x: hidden;
 }
-    
+.search-go{
+    padding: 13px;
+    border-radius: 50%;
+    background-color: #784cfb;
+    color: white;
+    width: fit-content;
+    margin-left: 1rem;
+}
+.git-search{
+    padding: 0.7rem 1rem;
+    border-radius: 18px;
+}
 
 
 
 @media(max-width:450px){
+    .option-cont{
+        margin-bottom: 1rem;
+    }
     .card{
         min-width: 270px;
         width: fit-content;
