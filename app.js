@@ -22,11 +22,11 @@ async function doesUserExist(user) {
     try {
         const response = await fetch(apiUrl);
         
-        // Check if the response status is 200 (OK)
+     
         if (response.ok) {
             username = user;
             Repositories(username,10);
-            UserProfile(username); // User exists
+            UserProfile(username); 
         } else if (response.status === 404) {
            alert("Username is not valid please try again");
         } else {
@@ -34,7 +34,7 @@ async function doesUserExist(user) {
         }
     } catch (error) {
         console.error('Error checking user existence:', error.message);
-        return false; // Assume user does not exist on error
+        return false; 
     }
 }
 
@@ -46,7 +46,8 @@ async function fetchRepositories(user, page, perPage) {
     console.log(repositoriesFetched);
     return repositoriesFetched;
 }
-// Updated renderPagination function
+
+//Pagination function
 function renderPagination(totalPages, onPageChange) {
     const paginationContainer = document.getElementById('pagination');
 
@@ -60,15 +61,14 @@ function renderPagination(totalPages, onPageChange) {
         pageLink.href = '#';
         pageLink.textContent = page;
         pageLink.addEventListener('click', function () {
-            // Remove 'active' class from all page links
+           
             document.querySelectorAll('.pages').forEach(link => {
                 link.classList.remove('active');
             });
 
-            // Add 'active' class to the clicked page
             pageLink.classList.add('active');
 
-            // When a page is clicked, execute the provided callback (onPageChange)
+            // When a page is clicked, execute the provided callback
             onPageChange(page);
         });
         if (page === currentPage) {
@@ -79,30 +79,29 @@ function renderPagination(totalPages, onPageChange) {
     }
 }
 
-// Updated Repositories function
+
 async function Repositories(user, perPage) {
      repositories_json = await fetchRepositories(user, currentPage, perPage);
     const repoList = document.querySelector(".cards-list");
 
     repoList.innerHTML='';
 
-    // Calculate total pages based on total repositories and selected per page
-     // Replace with actual total repository count
+   
     const totalPages = Math.ceil(totalRepos / perPage);
 
-    // Display total pages
     
 
     // Function to render repositories for a specific page
     function renderRepositoriesPage(page) {
+
         // Clear previous repositories
         repoList.innerHTML = '';
 
-        // Calculate start and end index for the current page
+      
         const startIndex = (page - 1) * perPage;
         const endIndex = Math.min(startIndex + perPage, totalRepos);
 
-        // Fetch repositories for the selected page
+        
         fetchRepositories(username, page, perPage)
             .then(repositoriesPage => {
                 repositoriesPage.forEach(data => {
@@ -174,18 +173,12 @@ async function Repositories(user, perPage) {
     }
 
     renderRepositoriesPage(currentPage);
-    // Render pagination links
+    
     renderPagination(totalPages, renderRepositoriesPage);
 }
 
-
-// Updated JavaScript (script.js)
-
-// ...
-
-// Function to fetch and list all repositories in JSON format for a specific profile
 async function listAllReposInJSON(username) {
-    const perPage = 100; // Set the number of repositories to fetch per page
+    const perPage = 100; 
     let page = 1;
     let allRepositories = [];
 
@@ -229,10 +222,9 @@ searchInput.addEventListener('click',()=>{
 searchInput.addEventListener('input', function () {
     const searchQuery = this.value.trim().toLowerCase();
 
-    // Trigger the search function with the input query
-    // searchRepositoriesByTitle(username,searchQuery);
+   
     if (searchInput.value.trim() === '') {
-        Repositories(username,10); // Call your function to fetch and display repositories
+        Repositories(username,10); 
     }
    
     const cards = document.querySelectorAll('.card');
@@ -319,25 +311,6 @@ async function searchRepos(user){
 
 }
 
-// Function to search repositories by title using GitHub Search API
-async function searchRepositoriesByTitle(user,query) {
-    const apiUrl = `https://api.github.com/search/repositories?q=user:${user}+in:title+${query}`;
-    
-    try {
-        const response = await fetch(apiUrl);
-        
-        if (!response.ok) {
-            throw new Error('Unable to fetch repositories data');
-        }
-
-        const searchData = await response.json();
-
-        // Render the search results or perform any other actions with the data
-        renderSearchResults(searchData.items);
-    } catch (error) {
-        console.error('Error fetching repositories data:', error.message);
-    }
-}
 
 // Function to render search results
 function renderSearchResults(searchResults) {
