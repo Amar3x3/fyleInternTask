@@ -219,12 +219,20 @@ const data =  listAllReposInJSON(username);
 searchInput.addEventListener('click',()=>{
     searchRepos(username);
 })
+var firstNullFlg = true;
 searchInput.addEventListener('input', function () {
     const searchQuery = this.value.trim().toLowerCase();
 
    
     if (searchInput.value.trim() === '') {
-        Repositories(username,10); 
+        if(firstNullFlg){
+            Repositories(username,10); 
+            firstNullFlg = false;
+        }
+    }
+    if(!firstNullFlg){
+        searchRepos(username);
+        firstNullFlg = true;
     }
    
     const cards = document.querySelectorAll('.card');
