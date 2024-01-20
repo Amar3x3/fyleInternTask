@@ -256,16 +256,7 @@ html{
 
 
 
-.reveal{
-    position: relative;
-    transform: translateY(90px);
-    opacity: 0;
-    transition: all 1.5s ease;
-  }
-  .reveal.active{
-    transform: translateY(0px);
-    opacity: 1;
-  }
+
   .reveal-from-right{
     position: relative;
     transform: translateX(130px);
@@ -276,14 +267,5 @@ html{
     transform: translateY(0px);
     opacity: 1;
   }
-  .reveal-from-left{
-    position: relative;
-    transform: translateX(-130px);
-    opacity: 0;
-    transition: all 1.7s ease;
-  }
-  .reveal-from-left.active-left{
-    transform: translateX(0px);
-    opacity: 1;
-  }
+
   
