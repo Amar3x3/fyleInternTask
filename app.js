@@ -1,6 +1,4 @@
-// script.js
-// // script.js
-// JavaScript (script.js)
+
 const repoContainer = document.getElementById('repos-list');
 const totalPagesContainer = document.getElementById('total-pages');
 const paginationContainer = document.getElementById('pagination');
@@ -400,7 +398,7 @@ function setUserInformation(userName, fullName, bio, email, gitUrl, repoCount, f
 
 const selectElement = document.getElementById('reposPerPage');
 
-// Event listener for the select box
+
 selectElement.addEventListener('change', function () {
     // Fetch repositories with the selected number per page
     const selectedPerPage = this.value;
