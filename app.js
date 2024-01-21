@@ -405,7 +405,7 @@ function setUserInformation(userName, fullName, bio, email, gitUrl, repoCount, f
 
 const selectElement = document.getElementById('reposPerPage');
 
-// Event listener for the select box
+
 selectElement.addEventListener('change', function () {
     // Fetch repositories with the selected number per page
     const selectedPerPage = this.value;
