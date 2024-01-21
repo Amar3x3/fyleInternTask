@@ -1,6 +1,4 @@
-// script.js
-// // script.js
-// JavaScript (script.js)
+
 const repoContainer = document.getElementById('repos-list');
 const totalPagesContainer = document.getElementById('total-pages');
 const paginationContainer = document.getElementById('pagination');
@@ -51,12 +49,15 @@ async function fetchRepositories(user, page, perPage) {
 //Pagination function
 function renderPagination(totalPages, onPageChange) {
     const paginationContainer = document.getElementById('pagination');
+    console.log("pagination");
 
     // Clear previous pagination
     paginationContainer.innerHTML = '';
+    console.log("total"+totalPages)
 
     // page number links
     for (let page = 1; page <= totalPages; page++) {
+        console.log("trig")
         const pageLink = document.createElement('a');
         pageLink.classList.add('pages')
         pageLink.href = '#';
@@ -77,6 +78,7 @@ function renderPagination(totalPages, onPageChange) {
             pageLink.classList.toggle('active'); // Highlight the current page
         }
         paginationContainer.appendChild(pageLink);
+        console.log("pc"+paginationContainer);
     }
 }
 
@@ -89,6 +91,7 @@ async function Repositories(user, perPage) {
 
    
     const totalPages = Math.ceil(totalRepos / perPage);
+    console.log("pages "+totalPages);
 
     
 
@@ -220,7 +223,6 @@ const data =  listAllReposInJSON(username);
 searchInput.addEventListener('click',()=>{
     searchRepos(username);
 })
-
 var firstNullFlg = true;
 searchInput.addEventListener('input', function () {
     const searchQuery = this.value.trim().toLowerCase();
@@ -351,11 +353,14 @@ async function fetchUserProfile(username) {
 
 async function UserProfile(user) {
     const userData = await fetchUserProfile(user);
+    totalRepos = userData.public_repos;
     setUserProfileImage(userData.avatar_url);
 
     setUserInformation(userData.login, userData.name, userData.bio,
         userData.email, userData.html_url, userData.public_repos,
         userData.followers, userData.following);
+
+        
 }
 UserProfile('johnpapa');
 

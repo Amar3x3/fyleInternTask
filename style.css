@@ -267,5 +267,9 @@ html{
     transform: translateY(0px);
     opacity: 1;
   }
+  #no-results {
+    display: none;
+    color: red;
+}
 
   
